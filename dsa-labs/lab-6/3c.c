@@ -3,9 +3,7 @@
 #define NAN (__builtin_nanf(""))
 #define nan (char)0
 
-
-// WORKS FOR DECIMAL AND NEGATIVE NUMBERS
-
+// WORKS FOR DECIMAL AND NEGATIVE NUMBERS ALSO
 
 typedef struct stacklist
 {
@@ -34,6 +32,8 @@ int main()
      printf("\033[1;31mNOTE: Put brackets for negative numbers  e.g (-12)+2\n\033[0m");
      printf("Enter the expression: ");
      size_t size = 0, len = 0;
+
+     //####### TAKES STRING INPUT ###########
 
      //making first element as '('
      if (len + 1 >= size)
@@ -66,12 +66,16 @@ int main()
      free(str);
 }
 
+//######## Given expression to Prefix notation #######
+//Prefix notations are stored in linked list stack
 void exprToPrefix(char *str, int len)
 {
      stacklist *prefix = NULL;
      stacklist *operators = NULL;
      int i = len - 1;
      printf("\nGiven expresion: %s", str);
+
+     //instead of reversing the given expression,  accessing from  end of expression
      for (i; i >= 0;)
      {
 
@@ -115,6 +119,16 @@ void exprToPrefix(char *str, int len)
                }
                else
                {
+                    // takes number part and stores in prefix
+                    // e.g let's consider 12 is present in given expression , after reversing it becomes 21
+                    // that 21 is stored 'deci' , then deci is reversed then it becomes 12
+                    // number=deci;
+
+                    //e.g let's consider 12.34 is present in given expression , after reversing it becomes 43.21
+                    // 43 is stored in 'deci', then deci is reversed then it becomes 34,
+                    // 21 is stored in 'integer', then number is reversed then it becomes 12,
+                    // number= integer+makeDeci(deci);i.e number= 12+ makeDeci(34)
+                    //Now the 'number' becomes 12.34
                     float number;
                     int integer;
                     int correcter = 1;
@@ -174,7 +188,32 @@ void exprToPrefix(char *str, int len)
      reverselist(&prefix);
      printf("\n\nResult of %s is %.10g\n", str, evalprefix(prefix));
 }
+
+//converts as decimal
 float makeDeci(int num)
+{
+     float result = num;
+     int count = 0;
+     while ((num / 10) == (result / 10))
+     {
+          num = num / 10;
+          result = result / 10;
+          count++;
+     }
+     while (result >= 1)
+     {
+          result = result / 10.0;
+     }
+     for (int i = 0; i < count; i++)
+     {
+          result = result / 10.0;
+     }
+     return result;
+}
+/*
+// this function converts 45 to .45, but we need 450 to .045
+//this function converts 450 to .45 only, above function converts properly
+ float makeDeci(int num)
 {
      float result = num;
      while (result >= 1)
@@ -183,6 +222,7 @@ float makeDeci(int num)
      }
      return result;
 }
+*/
 float evalprefix(stacklist *head)
 {
      stacklist *number;

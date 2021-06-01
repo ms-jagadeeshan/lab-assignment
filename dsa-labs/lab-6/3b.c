@@ -3,7 +3,7 @@
 #define NAN (__builtin_nanf(""))
 #define nan (char)0
 
-//PROBLEM IN 3a is resolved
+//PROBLEM IN 3a is resolved by using another variable called 'correcter'
 
 
 typedef struct stacklist
