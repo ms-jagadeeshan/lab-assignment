@@ -133,7 +133,6 @@ int enqueue(int num)
         }
         else
         {
-
             rear++;
         }
         printf("\033[2J\033[1;1H");
